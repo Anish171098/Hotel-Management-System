@@ -1,0 +1,201 @@
+SQL> spool D:/dbmsproject.txt
+SQL> insert into guest(fname,lname,email,phone,room_id,addess,loginid,password)values(‘sahil’,’kamal’,’sahilkamal388@gmail.com’,9455750113,101,’tamilnadu’,001,’sahil’);                     1 row created.
+SQL> insert into guest(fname,lname,email,phone,room_id,addess,loginid,password)values(‘anish’,’thakur’,’anishthakur@gmail.com’,987654321,102,’tamilnadu’,002,’anish’);
+1 row created.
+SQL> insert into  guest(fname,lname,email,phone,room_id,addess,loginid,password)values(‘raman’,’mishra’,’ramanmishra@gmail.com,698455125,103,'kerala',003,’raman’);    
+1 row created.
+SQL> insert into guest(fname,lname,email,phone,room_id,addess,loginid,password)values(‘himanshu’,’singh’,’himanshusingh@gmail.com,4465165478,104,'kolkata',004,’himanshu’);   
+1 row created.
+SQL> insert into rooms(room_id,number,level,style,view,beds) values (101,01,1,’good’,’nice’,2);   
+1 row created.
+SQL> insert into rooms (room_id,number,level,style,view,beds) values (102,02,2,’nice’,’excellent’,3);
+1 row created.
+SQL> insert into rooms (room_id,number,level,style,view,beds) values (103,03,3,’excellent’,’awesome’,1);
+1 row created.
+SQL> insert rooms(room_id,number,level,style,view,beds) values (103,03,3,’poor’,’italic’,2);
+1 row created.
+SQL> insert into reservation (resnumber,checkin,chekout,room_id) values (05,11,5,101);
+1 row created.
+SQL> insert into reservation (resnumber,checkin,chekout,room_id) values (06,2,9,102);
+1 row created.
+SQL> insert into reservation (resnumber,checkin,chekout,room_id) values (09,6,10,103);
+1 row created.
+SQL> insert into reservation (resnumber,checkin,chekout,room_id) values (05,8,7,104);
+1 row created.
+SQL> insert into admin (employee_name,employee_id,guest_id,payment_id,resnumber) values (‘sahil’,01,102,1456,05);
+1 row created.
+SQL> insert into admin (employee_name,employee_id,guest_id,payment_id,resnumber) values (‘anish’,02,103,1789,06);
+1 row created.
+SQL> insert into admin (employee_name,employee_id,guest_id,payment_id,resnumber) values (‘raman’,03,104,1596,07);
+1 row created.
+SQL> insert into admin (employee_name,employee_id,guest_id,payment_id,resnumber) values(‘himanshu’,04,105,8963,08);
+1 row created.
+SQL> desc Rooms;
+ Name                                      Null?    Type
+----------------------------------------- -------- --------------------                                                                                                                        ROOM_ID                                          NOT NULL NUMBER(38)
+ NUMBER                                            NUMBER(38)                                                                                                         
+ LEVEL                                             NUMBER(38) 
+ STYLE                                             VARCHAR2(255)
+ VIEW                                              VARCHAR(255)
+ BEDS                                              NUMBER(38)
+SMOKING                                            ARCHAR2(255)
+
+SQL> insert into Rooms(room_id, number,Level,Style, View, Beds , Smoking)values(001,121,2,'Suite','Lakeside',2,'Yes');
+1 row created.
+
+SQL> select * from reservations;
+
+RESNUMBER       CHECKIN      CHECKOUT                 ROOM_ID
+---------- ---------- ---------- -------------------- --------------------
+11                  12/6/19	15/6/19	               526
+12                  15/6/19	17/6/19	               728
+
+
+SQL>select beds as matresses from rooms;
+
+matresses
+-------------------- 
+2
+3
+5
+
+
+SQL> select checkin || checkout as durationfrom reservations;
+
+      DURATION                                                                                                                                                       
+------------------------------- 
+     25/6/19  27/6/19
+     5/6/19   7/6/19
+
+
+SQL>select beds,beds+3 from rooms where style = ‘suite’;
+
+BEDS     BEDS+3        STYLE
+ ----------    --------------------  --------------------
+2           5         suite
+4           7         suite
+
+
+SQL>select employee_id, distinct employee_name from admin_log;
+
+EMPLOYEE_ID          EMPLOYEE_NAME
+------------- --------------------
+1                     Anish
+2                     Sahil
+
+
+SQL>select login_id,fname from guest where state = ‘tamilnadu’;
+
+S_ID          F_NAME
+------------- ------------------
+001           Sahil
+002           Anish
+
+SQL>select * from reservation where room_id = 101
+
+room_ID       checkincheckoutresnumber
+---------- ---------- ---------- -------------------- --------------------
+10111          505
+
+
+SQL>select * from rooms where beds<3;
+
+Room_id   number  level      stylebeds
+---------- -------------------- -------------------
+001         326      2          Ultra 
+002         456      3          Medium
+
+
+SQL>select lname,address from student where f_name = ‘a% _ _ __ ‘;
+
+L_NAME                ADDRESS
+ -------------------  - --------------------
+anish                 chennai            
+
+SQL>select employee_id,guest_id,payment_id from admin where  payment_id  in between(1500,2000);
+
+Employee_idguest_id               payment_id
+----------  -------------  ------------------------------ 
+02                  103               1789      
+03                  104               1596     
+
+
+SQL>select s_id,upper(f_name),upper(l_name) from student;
+
+S_ID    UPPER(fNAME)      UPPER(STATE)
+------- --------------------------- --------------------
+101          SAHIL         SAHILKAMAL@GMAIL.COM   
+102          ANISH         ANISHTHAKUR@GMAIL.COM  
+103          RAMAN         RAMANMISHRA@GMAIL.COM  
+104          HIMANSHU      HIMANSHUSINGH@GMAIL.COM
+
+
+SQL>select guests.guest_id,rooms.number from guests inner join rooms on guests.guest_id = rooms.room_id;
+
+GUEST_ID            NUMBER
+-------------  ----------------------
+20                       526
+21                       548
+22                       125
+23                       741
+24                       654
+
+
+
+SQL>select guests.guest_id,rooms.number from guests left join rooms on guests.guest_id = rooms.room_id order by guest_id;
+
+GUEST_ID            NUMBER
+-------------  ----------------------
+
+20                  548
+21                  475
+22                  145
+23                  425
+
+SQL>select f_name,l_name from  guests where room_id =(select room_id from rooms where beds  = min(beds));
+
+F_NAME              L_NAME
+------------- ------------- --------------
+anish               thakur
+sayandip            paul
+
+
+SQL> select guest_id,fname,lname from guests where room_id =(select room_id from rooms where style  = ‘suite’);
+
+GUEST_ID        F_NAME           L_NAME
+----------- ------------------ -------------- --------------
+112         sri                  vidhya
+
+
+SQL>select fname from guests where room_id = (select room_id from reservations where resNumber = 20);
+
+FNAME
+--------------
+Anish
+Sahil
+
+SQL>select fname from guests where guest_id = (select guest_id from admin_log where employee_id = 20);
+
+fname           
+---------------- 
+Rahul 
+
+
+SQL>select f_name from guests where room_id = (select room_id from reservations where checkout = ‘24/8/19’);
+
+F_NAME     
+--------- ----------- ---------------
+jousaf      
+savri       
+
+
+
+
+     
+
+
+
+  
+
+                                               
+                                                                                                                                                           
